@@ -1,0 +1,117 @@
+1. Afficher la signature 
+aller dans sgoinfre 
+sha1sum born2beroot.vdi 
+--------------------------------
+2.Le service UFW est correctement lancé
+sudo ufw status 
+------------
+3.Le service SSH est correctement lancé
+sudo systemctl status ssh
+--------------
+4. L'utilisateur appartient au groupe sudo et au groupe user42
+ getent group sudo
+ getent group user42
+ --------------
+5. Creer un nouvel utilisateur
+ sudo adduser mimi42
+ 
+ Regles de MDP : 2 fichiers
+ 1er fichier : vim /etc/pam.d/common-password
+ 
+ 10caracteres minimum, dont 1maj, 1minuscule, 1chiffre, pas plus de 3caracteres identiques consecutifs, ne devra pas comporter le nom de l'utilisateur.
+
+ 2e fichier : vim /etc/login.defs
+ -stocke les règles d'expiration des mots de passe :
+ Expire tous les 30jours, attendre 2 jours avant de pouvoir remodifier le MDP, Avertissement 7jours avant que le MDP n'expire.
+ -------------------------
+ 6. Creer un groupe de nom "evaluant"
+ sudo addgroup evaluant
+ 
+ Y ajouter le nouvel utilisateur 
+ sudo usermod -aG evaluant mimi42
+ 
+ Verifier que l'utilisateur a bien ete ajouter au groupe
+ getent group evaluant
+ 
+ Expliquer l'objet de cette politique de mot de passe, ainsi que la les avantages et les inconvénients de sa mise en œuvre.
+ mot de passe difficile = difficile a hacker
+ Plus c'est difficile a trouver plus c'est securiser
+ -----------------------------
+ 7. Vérifier que le nom d'hôte de la machine est formaté comme suit: nolecler42
+ hostnamectl
+ 
+ Changez ce nom d'hôte en remplaçant la connexion par celui de l evaluateur
+ hostnamectl set-hostname new_hostname-
+ 
+ Restaurer le nom d'hote original 
+ 
+ Afficher les partitions : lsblk
+ 
+ LVM : C'est une methode qui permet de gerer les partitions de disques.
+ 
+ Benefique car elle est flexible.
+ 
+ --------------------------------
+ 8. Verifier que UFW est installe sur la VM
+ sudo ufw status
+ 
+ UFW : outil qui gere les pare-feu
+ C'est important car c'est un dispositif de securite qui permet de controler les trafics grace au port ouvert ou fermer. 
+ 
+Enumerez les regles actives :  sudo ufw status
+ le port 4242 est ouvert et autoriser a accepter des connexions venant de n'importe ou.
+ 
+Ajoutez une nouvelle regle au port 8080 :
+ sudo ufw allow 8080
+ sudo ufw status
+
+Supprimer un port
+ On affiche avec : sudo ufw status numbered
+ Puis on supprime : sudo ufw delete [ 3]  
+ ------------------------------------
+ 9. Verifier si SSH est bien installe
+ sudo systemctl status ssh 
+ 
+ SSH (Secure Shell) est un protocole sécurisé qui permet de prendre le contrôle d'une machine distante via le terminal.
+ L'importance de l'utiliser : securiser(communication chiffree), acces a distance.
+ 
+ Verifier que ssh n'utilise que le port 4242
+ 
+ hostname -I donne l'IP
+ Puis ssh nolecler@numeroIP -p 4242
+ 
+ La personne évaluée doit vous aider à utiliser SSH pour se connecter au nouvel utilisateur créé. Pour cela, vous pouvez utiliser une clé ou un mot de passe simple, selon la personne évaluée. Bien sûr, vous devez vous assurer que le SSH ne peut pas être utilisé avec l'utilisateur "racelle" comme indiqué dans le sujet. Si quelque chose ne fonctionne pas comme prévu ou n'est pas clairement expliqué, l'évaluation s'arrête ici.
+ 
+ hostname -I donne l'IP
+ Puis ssh nolecler@numeroIP -p 4242
+ -------------------------------------------
+ 10. Expliquer :Le fonctionnement du script en affichant son code
+ cd /usr/local/bin
+ ls
+ cat monitoring.sh (Savoir expliquer les commandes)
+ 
+ Un script est un fichier avec des instructions pour dire à l'ordinateur ce qu’il doit faire.  
+ Cela sert à automatiser une tâche comme par EX: afficher le script toutes les 10 minutes.
+ 
+ Modifier l'affichage du script toute les 1 minute
+ 
+ Cron :
+ 
+ Comment ils ont mis en place leur script pour exécuter toutes les 10 minutes à partir du lancement du serveur. Une fois le bon le fonctionnement du script est vérifié, la personne évaluée doit s'assurer que ce script s'exécute chaque minute. Vous pouvez lancer tout ce que vous souhaitez garantir que le script fonctionne correctement avec la dynamique valeurs. Enfin, la personne évaluée doit s'assurer que le script ne fonctionne plus au lancement du serveur, sans modifier le script lui-même. Pour vérifier ce point, le serveur devra être redémarré un dernier temps. Au démarrage, il faut vérifier que le script existe toujours au même endroit, que son les autorisations sont restées inchangées et n'ont pas été modifiées.
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
